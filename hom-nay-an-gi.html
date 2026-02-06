@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hôm Nay Ăn Gì? - Tìm quán ăn sinh viên Chùa Láng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&family=Lexend:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E85D2C;
+            --secondary: #FFD23F;
+            --bg: #FFF8F0;
+            --bg-card: #FFFFFF;
+            --text: #2D3142;
+            --text-light: #6B7280;
+            --accent: #4ECDC4;
+            --shadow: rgba(255, 107, 53, 0.15);
+        }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Page Container */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            position: relative;
+            overflow: hidden;
+            margin-top: -80px;
+            padding-top: 140px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="2" height="2" x="20" y="20" fill="rgba(255,255,255,0.1)"/><rect width="2" height="2" x="60" y="60" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: -2px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .hero .description {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 2rem;
+            background: var(--bg);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-family: 'Lexend', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+        }
+
+        /* Search Page */
+        .search-header {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .search-header h1 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .filters {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin: -2rem auto 2rem;
+            max-width: 1000px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 25px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .filter-chip:hover, .filter-chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 50px;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Restaurant Cards */
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .restaurant-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .restaurant-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg"><circle cx="25" cy="25" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+        }
+
+        .restaurant-info {
+            padding: 1.5rem;
+        }
+
+        .restaurant-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .restaurant-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .rating {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* Detail Page */
+        .detail-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        .detail-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .detail-main {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .detail-sidebar {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .review {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .review-author {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .about-content h2 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+        }
+
+        .about-content p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .about-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Team Grid */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .team-member {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .stat-number {
+            font-family: 'Lexend', sans-serif;
+            font-size: 3rem;
+            color: var(--primary);
+            font-weight: 900;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .detail-content {
+                grid-template-columns: 1fr;
+            }
+
+            .restaurant-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showPage('home')">HÔM NAY ĂN GÌ?</a>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" onclick="showPage('home')">Trang chủ</a></li>
+                <li><a href="#" onclick="showPage('search')">Tìm quán</a></li>
+                <li><a href="#" onclick="showPage('stats')">Thống kê</a></li>
+                <li><a href="#" onclick="showPage('about')">Về dự án</a></li>
+                <li><a href="#" onclick="showPage('team')">Nhóm</a></li>
+                <li><a href="#" onclick="showPage('contribute')">Đóng góp</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page 1: Home -->
+    <div id="home" class="page active">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>HÔM NAY ĂN GÌ?</h1>
+                <p class="subtitle">Web hỗ trợ sinh viên lựa chọn quán ăn quanh khu vực Chùa Láng</p>
+                <p class="description">"Hôm Nay Ăn Gì?" là nền tảng giúp sinh viên, đặc biệt là sinh viên Ngoại Thương, nhanh chóng tìm được quán ăn phù hợp trong bán kính 1–2km quanh Chùa Láng dựa trên giá cả, thời gian, khoảng cách và trải nghiệm thực tế từ sinh viên.</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary" onclick="showPage('search')">🔍 Bắt đầu tìm quán</button>
+                    <button class="btn btn-secondary" onclick="showPage('search')">📋 Xem danh sách quán</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>Tính năng nổi bật</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Tìm kiếm thông minh</h3>
+                    <p>Lọc quán theo giá, khoảng cách, loại món và thời gian ăn.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3>Bản đồ vị trí</h3>
+                    <p>Xem vị trí quán ăn và khoảng cách từ Chùa Láng.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Review thực tế</h3>
+                    <p>Đánh giá trực tiếp từ sinh viên, không quảng cáo.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏱</div>
+                    <h3>Gợi ý theo thời gian</h3>
+                    <p>Gợi ý quán cho bữa sáng, trưa, tối, ăn vặt.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" style="text-align: center; padding: 3rem 2rem;">
+            <h2 style="font-family: 'Lexend', sans-serif; font-size: 2rem; margin-bottom: 1rem;">Giới thiệu nhanh</h2>
+            <div style="max-width: 600px; margin: 2rem auto;">
+                <p style="margin-bottom: 1rem;">✅ Hỗ trợ tìm quán ăn nhanh chóng</p>
+                <p style="margin-bottom: 1rem;">✅ Dữ liệu do sinh viên tự thu thập và đánh giá</p>
+                <p style="margin-bottom: 1rem;">✅ Phù hợp ngân sách sinh viên</p>
+                <p style="margin-bottom: 2rem;">✅ Giao diện đơn giản, dễ sử dụng</p>
+                <button class="btn btn-primary" onclick="showPage('about')">Tìm hiểu thêm</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Page 2: Search -->
+    <div id="search" class="page">
+        <div class="search-header">
+            <h1>🍜 Tìm quán ăn</h1>
+            <p>Khám phá hơn 50+ quán ăn xung quanh Chùa Láng</p>
+        </div>
+
+        <div class="container">
+            <div class="filters">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Tìm kiếm món ăn hoặc quán..." oninput="filterRestaurants()">
+                
+                <div class="filter-group">
+                    <label>Khoảng cách</label>
+                    <div class="filter-options">
+                        <div class="filter-chip" onclick="toggleFilter(this, 'distance', '<500m')">&lt; 500m</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'distance', '500m-1km')">500m - 1km</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'distance', '1-2km')">1 - 2km</div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Mức giá</label>
+                    <div class="filter-options">
+                        <div class="filter-chip" onclick="toggleFilter(this, 'price', '<30k')">&lt; 30k</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'price', '30-50k')">30k - 50k</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'price', '>50k')">&gt; 50k</div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Loại món</label>
+                    <div class="filter-options">
+                        <div class="filter-chip" onclick="toggleFilter(this, 'type', 'cơm')">🍚 Cơm</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'type', 'bún')">🍜 Bún</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'type', 'phở')">🥘 Phở</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'type', 'mì')">🍝 Mì</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'type', 'ăn vặt')">🍢 Ăn vặt</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'type', 'trà sữa')">🧋 Trà sữa</div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Thời gian</label>
+                    <div class="filter-options">
+                        <div class="filter-chip" onclick="toggleFilter(this, 'time', 'sáng')">🌅 Sáng</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'time', 'trưa')">☀️ Trưa</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'time', 'tối')">🌆 Tối</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'time', 'khuya')">🌙 Khuya</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="restaurant-grid" id="restaurantGrid">
+                <!-- Sample restaurants -->
+                <div class="restaurant-card" onclick="showRestaurantDetail('com-tam-hai-dang')" data-distance="<500m" data-price="<30k" data-type="cơm" data-time="sáng trưa tối" data-name="Cơm Tấm Hải Đăng">
+                    <div class="restaurant-image">🍚</div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Cơm Tấm Hải Đăng</h3>
+                        <div class="restaurant-meta">
+                            <span class="meta-item">📍 300m</span>
+                            <span class="meta-item">💰 20k - 35k</span>
+                            <span class="meta-item rating">⭐ 4.5</span>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">Cơm tấm, sườn nướng</p>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" onclick="showRestaurantDetail('bun-cha-thanh-van')" data-distance="500m-1km" data-price="30-50k" data-type="bún" data-time="sáng trưa" data-name="Bún Chả Thanh Vân">
+                    <div class="restaurant-image">🍜</div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Bún Chả Thanh Vân</h3>
+                        <div class="restaurant-meta">
+                            <span class="meta-item">📍 700m</span>
+                            <span class="meta-item">💰 35k - 45k</span>
+                            <span class="meta-item rating">⭐ 4.7</span>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">Bún chả Hà Nội truyền thống</p>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" onclick="showRestaurantDetail('pho-thin')" data-distance="<500m" data-price="30-50k" data-type="phở" data-time="sáng trưa" data-name="Phở Thìn Bờ Hồ">
+                    <div class="restaurant-image">🥘</div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Phở Thìn Bờ Hồ</h3>
+                        <div class="restaurant-meta">
+                            <span class="meta-item">📍 400m</span>
+                            <span class="meta-item">💰 40k - 50k</span>
+                            <span class="meta-item rating">⭐ 4.8</span>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">Phở bò thập cẩm</p>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" onclick="showRestaurantDetail('banh-mi-que')" data-distance="<500m" data-price="<30k" data-type="ăn vặt" data-time="sáng trưa tối khuya" data-name="Bánh Mì Que">
+                    <div class="restaurant-image">🥖</div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Bánh Mì Que</h3>
+                        <div class="restaurant-meta">
+                            <span class="meta-item">📍 200m</span>
+                            <span class="meta-item">💰 15k - 25k</span>
+                            <span class="meta-item rating">⭐ 4.3</span>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">Bánh mì pate, thịt</p>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" onclick="showRestaurantDetail('tra-sua-gong-cha')" data-distance="500m-1km" data-price="30-50k" data-type="trà sữa" data-time="trưa tối khuya" data-name="Trà Sữa Gong Cha">
+                    <div class="restaurant-image">🧋</div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Trà Sữa Gong Cha</h3>
+                        <div class="restaurant-meta">
+                            <span class="meta-item">📍 600m</span>
+                            <span class="meta-item">💰 35k - 55k</span>
+                            <span class="meta-item rating">⭐ 4.6</span>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">Trà sữa, trân châu</p>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" onclick="showRestaurantDetail('mi-y-ha-thanh')" data-distance="1-2km" data-price="30-50k" data-type="mì" data-time="trưa tối" data-name="Mì Ý Hà Thành">
+                    <div class="restaurant-image">🍝</div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Mì Ý Hà Thành</h3>
+                        <div class="restaurant-meta">
+                            <span class="meta-item">📍 1.2km</span>
+                            <span class="meta-item">💰 40k - 60k</span>
+                            <span class="meta-item rating">⭐ 4.4</span>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">Mì Ý sốt bò bằm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 3: Restaurant Detail -->
+    <div id="detail" class="page">
+        <div class="detail-header">
+            <div class="container">
+                <button class="btn btn-secondary" onclick="showPage('search')" style="margin-bottom: 1rem;">← Quay lại</button>
+                <h1 id="detailName" style="font-family: 'Lexend', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem;">Cơm Tấm Hải Đăng</h1>
+                <p id="detailAddress">📍 123 Láng Hạ, Đống Đa, Hà Nội</p>
+            </div>
+        </div>
+
+        <div class="detail-content container">
+            <div class="detail-main">
+                <h2 style="margin-bottom: 1rem;">Thông tin chi tiết</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    <div>
+                        <strong>Khoảng cách:</strong>
+                        <p id="detailDistance">300m từ Chùa Láng</p>
+                    </div>
+                    <div>
+                        <strong>Mức giá:</strong>
+                        <p id="detailPrice">20k - 35k</p>
+                    </div>
+                    <div>
+                        <strong>Giờ mở cửa:</strong>
+                        <p id="detailHours">6:00 - 22:00</p>
+                    </div>
+                    <div>
+                        <strong>Loại món:</strong>
+                        <p id="detailType">Cơm</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 1rem;">Menu tiêu biểu</h3>
+                <div id="detailMenu">
+                    <div class="menu-item">
+                        <span>🍚 Cơm tấm sườn nướng</span>
+                        <strong>30.000đ</strong>
+                    </div>
+                    <div class="menu-item">
+                        <span>🍚 Cơm tấm sườn bì chả</span>
+                        <strong>35.000đ</strong>
+                    </div>
+                    <div class="menu-item">
+                        <span>🍚 Cơm tấm đặc biệt</span>
+                        <strong>40.000đ</strong>
+                    </div>
+                </div>
+
+                <h3 style="margin: 2rem 0 1rem;">Đánh giá từ sinh viên</h3>
+                <div id="detailReviews">
+                    <div class="review">
+                        <div class="review-author">⭐⭐⭐⭐⭐ - Nguyễn Văn A</div>
+                        <p>"Giá rẻ, phục vụ nhanh, hợp ăn trưa. Sườn nướng thơm ngon!"</p>
+                    </div>
+                    <div class="review">
+                        <div class="review-author">⭐⭐⭐⭐ - Trần Thị B</div>
+                        <p>"Không gian nhỏ nhưng đồ ăn ổn. Lúc cao điểm hơi đông."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-sidebar">
+                <h3 style="margin-bottom: 1rem;">Bản đồ</h3>
+                <div style="background: linear-gradient(135deg, var(--accent), var(--primary)); height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                    🗺️
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light); text-align: center;">
+                    Google Maps integration
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 4: Stats -->
+    <div id="stats" class="page">
+        <div class="search-header">
+            <h1>📊 Tổng quan dữ liệu</h1>
+            <p>Thống kê về các quán ăn khu vực Chùa Láng</p>
+        </div>
+
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Quán ăn</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">35k</div>
+                    <div class="stat-label">Giá trung bình</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">200+</div>
+                    <div class="stat-label">Đánh giá</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4.5⭐</div>
+                    <div class="stat-label">Đánh giá TB</div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: 20px; margin-top: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                <h2 style="margin-bottom: 1rem;">Loại món phổ biến</h2>
+                <div style="display: grid; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="width: 100px;">🍚 Cơm</span>
+                        <div style="flex: 1; background: #E5E7EB; border-radius: 10px; height: 30px; overflow: hidden;">
+                            <div style="background: var(--primary); width: 80%; height: 100%; display: flex; align-items: center; padding-left: 1rem; color: white; font-weight: 700;">80%</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="width: 100px;">🍜 Bún/Phở</span>
+                        <div style="flex: 1; background: #E5E7EB; border-radius: 10px; height: 30px; overflow: hidden;">
+                            <div style="background: var(--accent); width: 65%; height: 100%; display: flex; align-items: center; padding-left: 1rem; color: white; font-weight: 700;">65%</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="width: 100px;">🧋 Trà sữa</span>
+                        <div style="flex: 1; background: #E5E7EB; border-radius: 10px; height: 30px; overflow: hidden;">
+                            <div style="background: var(--secondary); width: 50%; height: 100%; display: flex; align-items: center; padding-left: 1rem; color: var(--text); font-weight: 700;">50%</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="width: 100px;">🍢 Ăn vặt</span>
+                        <div style="flex: 1; background: #E5E7EB; border-radius: 10px; height: 30px; overflow: hidden;">
+                            <div style="background: var(--primary); width: 45%; height: 100%; display: flex; align-items: center; padding-left: 1rem; color: white; font-weight: 700;">45%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: 20px; margin-top: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                <h2 style="margin-bottom: 1rem;">Khung giờ đông sinh viên</h2>
+                <div style="display: grid; gap: 1rem;">
+                    <div style="padding: 1rem; background: var(--bg); border-radius: 10px;">
+                        <strong>🌅 Sáng (6h - 9h)</strong>
+                        <p style="color: var(--text-light);">Phở, bánh mì, cơm tấm</p>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg); border-radius: 10px;">
+                        <strong>☀️ Trưa (11h - 13h)</strong>
+                        <p style="color: var(--text-light);">Cơm, bún, mì - cao điểm nhất</p>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg); border-radius: 10px;">
+                        <strong>🌆 Tối (17h - 20h)</strong>
+                        <p style="color: var(--text-light);">Cơm, ăn vặt, trà sữa</p>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg); border-radius: 10px;">
+                        <strong>🌙 Khuya (20h - 23h)</strong>
+                        <p style="color: var(--text-light);">Trà sữa, ăn vặt</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 5: About -->
+    <div id="about" class="page">
+        <div class="search-header">
+            <h1>💡 Về dự án</h1>
+            <p>Hôm Nay Ăn Gì? - Dự án của sinh viên, vì sinh viên</p>
+        </div>
+
+        <div class="about-content">
+            <h2>Giới thiệu dự án</h2>
+            <p>"Hôm Nay Ăn Gì?" được xây dựng nhằm hỗ trợ sinh viên lựa chọn quán ăn phù hợp quanh khu vực Chùa Láng. Dự án xuất phát từ nhu cầu thực tế của sinh viên khi mới nhập học, gặp khó khăn trong việc tìm địa điểm ăn uống phù hợp với ngân sách và thời gian.</p>
+
+            <h2>Mục tiêu</h2>
+            <ul>
+                <li>Xây dựng web/bot hỗ trợ sinh viên tìm quán trong bán kính 1–2km</li>
+                <li>Cho phép lọc theo giá, loại món, thời gian</li>
+                <li>Cung cấp thông tin ngắn gọn, tập trung trải nghiệm thật</li>
+                <li>Áp dụng kiến thức Python vào sản phẩm thực tế</li>
+            </ul>
+
+            <h2>Đối tượng</h2>
+            <p>Sinh viên Ngoại Thương và sinh viên khu vực Chùa Láng.</p>
+
+            <h2>Công nghệ sử dụng</h2>
+            <ul>
+                <li>Python (Google Colab)</li>
+                <li>Google Sheet lưu dữ liệu</li>
+                <li>Google Maps API</li>
+                <li>Streamlit (nếu có)</li>
+            </ul>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <button class="btn btn-primary" onclick="showPage('contribute')">Đóng góp dữ liệu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 6: Team -->
+    <div id="team" class="page">
+        <div class="search-header">
+            <h1>👥 Nhóm thực hiện</h1>
+            <p>Những người đứng sau dự án Hôm Nay Ăn Gì?</p>
+        </div>
+
+        <div class="container">
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-avatar">👨‍💻</div>
+                    <h3>Nguyễn Văn A</h3>
+                    <p style="color: var(--text-light);">Data Collection</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Thu thập và xử lý dữ liệu quán ăn</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">👩‍💻</div>
+                    <h3>Trần Thị B</h3>
+                    <p style="color: var(--text-light);">Web Development</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Phát triển giao diện và tính năng</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">👨‍🎨</div>
+                    <h3>Lê Văn C</h3>
+                    <p style="color: var(--text-light);">Content & Design</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Thiết kế UI/UX và nội dung</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">👩‍🔬</div>
+                    <h3>Phạm Thị D</h3>
+                    <p style="color: var(--text-light);">Research & Analysis</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Nghiên cứu và phân tích dữ liệu</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 7: Contribute -->
+    <div id="contribute" class="page">
+        <div class="search-header">
+            <h1>📩 Đóng góp dữ liệu</h1>
+            <p>Giúp chúng mình cải thiện dữ liệu quán ăn</p>
+        </div>
+
+        <div class="container">
+            <div style="max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label>Tên quán *</label>
+                        <input type="text" required placeholder="VD: Cơm Tấm Bà Dậu">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Địa chỉ *</label>
+                        <input type="text" required placeholder="VD: 123 Láng Hạ, Đống Đa">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Giá trung bình *</label>
+                        <select required>
+                            <option value="">-- Chọn mức giá --</option>
+                            <option value="<30k">Dưới 30k</option>
+                            <option value="30-50k">30k - 50k</option>
+                            <option value=">50k">Trên 50k</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Loại món *</label>
+                        <select required>
+                            <option value="">-- Chọn loại món --</option>
+                            <option value="cơm">Cơm</option>
+                            <option value="bún">Bún</option>
+                            <option value="phở">Phở</option>
+                            <option value="mì">Mì</option>
+                            <option value="ăn vặt">Ăn vặt</option>
+                            <option value="trà sữa">Trà sữa</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Đánh giá ngắn</label>
+                        <textarea placeholder="Chia sẻ trải nghiệm của bạn về quán..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Gửi đánh giá</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Hôm Nay Ăn Gì? - Dự án của sinh viên Ngoại Thương</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">Được xây dựng với ❤️ vì cộng đồng sinh viên</p>
+    </footer>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+            
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('active');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Filter System
+        let activeFilters = {
+            distance: [],
+            price: [],
+            type: [],
+            time: []
+        };
+
+        function toggleFilter(element, category, value) {
+            element.classList.toggle('active');
+            
+            const index = activeFilters[category].indexOf(value);
+            if (index > -1) {
+                activeFilters[category].splice(index, 1);
+            } else {
+                activeFilters[category].push(value);
+            }
+            
+            filterRestaurants();
+        }
+
+        function filterRestaurants() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.restaurant-card');
+            
+            cards.forEach(card => {
+                let show = true;
+                
+                // Search filter
+                if (searchTerm) {
+                    const name = card.dataset.name.toLowerCase();
+                    if (!name.includes(searchTerm)) {
+                        show = false;
+                    }
+                }
+                
+                // Category filters
+                for (let category in activeFilters) {
+                    if (activeFilters[category].length > 0) {
+                        const cardValue = card.dataset[category];
+                        const matches = activeFilters[category].some(filter => 
+                            cardValue.includes(filter)
+                        );
+                        if (!matches) {
+                            show = false;
+                        }
+                    }
+                }
+                
+                card.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        // Restaurant Detail
+        const restaurantData = {
+            'com-tam-hai-dang': {
+                name: 'Cơm Tấm Hải Đăng',
+                address: '123 Láng Hạ, Đống Đa, Hà Nội',
+                distance: '300m từ Chùa Láng',
+                price: '20k - 35k',
+                hours: '6:00 - 22:00',
+                type: 'Cơm',
+                menu: [
+                    { name: '🍚 Cơm tấm sườn nướng', price: '30.000đ' },
+                    { name: '🍚 Cơm tấm sườn bì chả', price: '35.000đ' },
+                    { name: '🍚 Cơm tấm đặc biệt', price: '40.000đ' }
+                ],
+                reviews: [
+                    { author: 'Nguyễn Văn A', rating: 5, text: 'Giá rẻ, phục vụ nhanh, hợp ăn trưa. Sườn nướng thơm ngon!' },
+                    { author: 'Trần Thị B', rating: 4, text: 'Không gian nhỏ nhưng đồ ăn ổn. Lúc cao điểm hơi đông.' }
+                ]
+            },
+            'bun-cha-thanh-van': {
+                name: 'Bún Chả Thanh Vân',
+                address: '45 Nguyễn Chí Thanh, Đống Đa, Hà Nội',
+                distance: '700m từ Chùa Láng',
+                price: '35k - 45k',
+                hours: '6:00 - 14:00',
+                type: 'Bún',
+                menu: [
+                    { name: '🍜 Bún chả thường', price: '35.000đ' },
+                    { name: '🍜 Bún chả đặc biệt', price: '45.000đ' },
+                    { name: '🍜 Nem rán', price: '30.000đ' }
+                ],
+                reviews: [
+                    { author: 'Lê Văn C', rating: 5, text: 'Bún chả ngon, đúng vị Hà Nội. Nước mắm pha chuẩn!' },
+                    { author: 'Phạm Thị D', rating: 4, text: 'Chất lượng ổn định, giá hợp lý. Buổi sáng đông khách.' }
+                ]
+            },
+            'pho-thin': {
+                name: 'Phở Thìn Bờ Hồ',
+                address: '67 Tôn Đức Thắng, Đống Đa, Hà Nội',
+                distance: '400m từ Chùa Láng',
+                price: '40k - 50k',
+                hours: '6:00 - 11:00',
+                type: 'Phở',
+                menu: [
+                    { name: '🥘 Phở bò tái', price: '40.000đ' },
+                    { name: '🥘 Phở bò chín', price: '40.000đ' },
+                    { name: '🥘 Phở bò thập cẩm', price: '50.000đ' }
+                ],
+                reviews: [
+                    { author: 'Hoàng Văn E', rating: 5, text: 'Phở ngon, nước dùng đậm đà. Thịt bò mềm, tươi!' },
+                    { author: 'Ngô Thị F', rating: 5, text: 'Quán nổi tiếng, xứng đáng. Nên đến sớm để tránh chờ đợi.' }
+                ]
+            },
+            'banh-mi-que': {
+                name: 'Bánh Mì Que',
+                address: '89 Láng Hạ, Đống Đa, Hà Nội',
+                distance: '200m từ Chùa Láng',
+                price: '15k - 25k',
+                hours: '5:00 - 23:00',
+                type: 'Ăn vặt',
+                menu: [
+                    { name: '🥖 Bánh mì pate', price: '15.000đ' },
+                    { name: '🥖 Bánh mì thịt', price: '20.000đ' },
+                    { name: '🥖 Bánh mì đặc biệt', price: '25.000đ' }
+                ],
+                reviews: [
+                    { author: 'Vũ Văn G', rating: 4, text: 'Giá rẻ, ăn nhanh. Phù hợp khi vội vàng!' },
+                    { author: 'Đỗ Thị H', rating: 4, text: 'Bánh mì giòn, nhân đầy đặn. Điểm ăn vặt lý tưởng.' }
+                ]
+            },
+            'tra-sua-gong-cha': {
+                name: 'Trà Sữa Gong Cha',
+                address: '34 Nguyễn Chí Thanh, Đống Đa, Hà Nội',
+                distance: '600m từ Chùa Láng',
+                price: '35k - 55k',
+                hours: '8:00 - 22:00',
+                type: 'Trà sữa',
+                menu: [
+                    { name: '🧋 Trà sữa trân châu đường đen', price: '45.000đ' },
+                    { name: '🧋 Trà ô long sữa', price: '40.000đ' },
+                    { name: '🧋 Trà chanh', price: '35.000đ' }
+                ],
+                reviews: [
+                    { author: 'Bùi Văn I', rating: 5, text: 'Trà sữa ngon, không quá ngọt. Topping đầy đặn!' },
+                    { author: 'Đinh Thị K', rating: 4, text: 'Không gian đẹp, phục vụ tốt. Hơi đông vào cuối tuần.' }
+                ]
+            },
+            'mi-y-ha-thanh': {
+                name: 'Mì Ý Hà Thành',
+                address: '156 Giảng Võ, Đống Đa, Hà Nội',
+                distance: '1.2km từ Chùa Láng',
+                price: '40k - 60k',
+                hours: '10:00 - 22:00',
+                type: 'Mì',
+                menu: [
+                    { name: '🍝 Mì Ý sốt bò bằm', price: '45.000đ' },
+                    { name: '🍝 Mì Ý carbonara', price: '50.000đ' },
+                    { name: '🍝 Mì Ý hải sản', price: '60.000đ' }
+                ],
+                reviews: [
+                    { author: 'Mai Văn L', rating: 4, text: 'Mì ngon, giá hợp lý. Phần ăn vừa đủ.' },
+                    { author: 'Lý Thị M', rating: 4, text: 'Sốt đậm đà, mì al dente. Không gian thoải mái.' }
+                ]
+            }
+        };
+
+        function showRestaurantDetail(id) {
+            const data = restaurantData[id];
+            if (!data) return;
+            
+            document.getElementById('detailName').textContent = data.name;
+            document.getElementById('detailAddress').textContent = '📍 ' + data.address;
+            document.getElementById('detailDistance').textContent = data.distance;
+            document.getElementById('detailPrice').textContent = data.price;
+            document.getElementById('detailHours').textContent = data.hours;
+            document.getElementById('detailType').textContent = data.type;
+            
+            // Menu
+            const menuHTML = data.menu.map(item => `
+                <div class="menu-item">
+                    <span>${item.name}</span>
+                    <strong>${item.price}</strong>
+                </div>
+            `).join('');
+            document.getElementById('detailMenu').innerHTML = menuHTML;
+            
+            // Reviews
+            const reviewsHTML = data.reviews.map(review => `
+                <div class="review">
+                    <div class="review-author">${'⭐'.repeat(review.rating)} - ${review.author}</div>
+                    <p>"${review.text}"</p>
+                </div>
+            `).join('');
+            document.getElementById('detailReviews').innerHTML = reviewsHTML;
+            
+            showPage('detail');
+        }
+
+        // Form Submit
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('Cảm ơn bạn đã đóng góp! Chúng mình sẽ xem xét và cập nhật thông tin sớm nhất.');
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>
